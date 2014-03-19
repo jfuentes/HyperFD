@@ -1,0 +1,6 @@
+# Output graph produced from input in file hiper
+# Input graph nodes: 6
+# Input graph hyperedges: 3
+# Output graph hyperedges (below): 2           
+0**0**
+00****
