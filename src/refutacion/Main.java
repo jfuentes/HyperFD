@@ -2,9 +2,9 @@
 package refutacion;
 
 import java.util.ArrayList;
+import java.util.BitSet;
 import java.util.HashMap;
-
-import com.csvreader.CsvReader;
+import java.util.StringTokenizer;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -15,54 +15,65 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-import java.util.BitSet;
-
+import com.csvreader.CsvReader;
 import de.htwdd.ga.util.BitSetUtil;
 
-import java.util.StringTokenizer;
-
-
+//Main Ordenado Y listo para subir
+//LOL
 public class Main {
     private static final int SCHERSON = 0;
     private static final int BERGE = 1;
     private static final int KAVVADIAS = 2;
     private static final int MURAKAMI = 3;
 
-    public Main() {
+    public Main() {}
 
-    }
-    //compiling
-    //javac -d "/home/jfuentes/HyperDF/classes" -classpath "/home/jfuentes/HyperDF/classes:/home/jfuentes/HyperDF/lib/javacsv.jar:/home/jfuentes/HyperDF/lib/ga-frame.jar" -encoding MacRoman -sourcepath "/home/jfuentes/HyperDF/src" -g -Xlint:all -Xlint:-cast -Xlint:-empty -Xlint:-fallthrough -Xlint:-path -Xlint:-processing -Xlint:-serial -Xlint:-unchecked "/home/jfuentes/HyperDF/src/refutacion/H.java" "/home/jfuentes/HyperDF/src/parallel/ParallelMain.java" "/home/jfuentes/HyperDF/src/refutacion/TuplaCheck.java" "/home/jfuentes/HyperDF/src/btree/Nodo.java" "/home/jfuentes/HyperDF/src/refutacion/Antecedente.java" "/home/jfuentes/HyperDF/src/btree/Main.java" "/home/jfuentes/HyperDF/src/parallel/package-info.java" "/home/jfuentes/HyperDF/src/refutacion/Main.java" "/home/jfuentes/HyperDF/src/utils/IteradorCombinacion.java" "/home/jfuentes/HyperDF/src/refutacion/TestBipMap.java" "/home/jfuentes/HyperDF/src/refutacion/Hipergrafo.java" "/home/jfuentes/HyperDF/src/parallel/MainP.java" "/home/jfuentes/HyperDF/src/btree/ArbolB.java" "/home/jfuentes/HyperDF/src/refutacion/Refutacion.java" "/home/jfuentes/HyperDF/src/refutacion/ComparableSet.java" "/home/jfuentes/HyperDF/src/parallel/ParallelProcess.java" "/home/jfuentes/HyperDF/src/btree/LlaveEntero.java" "/home/jfuentes/HyperDF/src/refutacion/Prueba.java" "/home/jfuentes/HyperDF/src/refutacion/Kavvadias.java" "/home/jfuentes/HyperDF/src/refutacion/Consecuente.java" 
+    //Compilation
+    //javac -d "/home/username/HyperDF/classes" -classpath "/home/username/HyperDF/classes:/home/username/HyperDF/lib/javacsv.jar:/home/username/HyperDF/lib/ga-frame.jar" -encoding MacRoman -sourcepath "/home/username/HyperDF/src" -g -Xlint:all -Xlint:-cast -Xlint:-empty -Xlint:-fallthrough -Xlint:-path -Xlint:-processing -Xlint:-serial -Xlint:-unchecked "/home/username/HyperDF/src/refutacion/H.java" "/home/username/HyperDF/src/refutacion/TuplaCheck.java" "/home/username/HyperDF/src/refutacion/Antecedente.java" "/home/username/HyperDF/src/refutacion/Main.java" "/home/username/HyperDF/src/utils/IteradorCombinacion.java" "/home/username/HyperDF/src/refutacion/Hipergrafo.java" "/home/username/HyperDF/src/refutacion/Refutacion.java" "/home/username/HyperDF/src/refutacion/Prueba.java" "/home/username/HyperDF/src/refutacion/Kavvadias.java" "/home/username/HyperDF/src/refutacion/Consecuente.java"
+    //Execution
+    //java -client -classpath "/home/username/.adf:/home/username/HyperDF/classes:/home/username/HyperDF/lib/javacsv.jar:/home/username/HyperDF/lib/ga-frame.jar" refutacion.Main MURAKAMI train50X500.csv 50 500
+    
 
-    // Execute en cluster
-    // java -client -classpath "/home/jfuentes/.adf:/home/jfuentes/HyperDF/classes:/home/jfuentes/HyperDF/lib/javacsv.jar:/home/jfuentes/HyperDF/lib/ga-frame.jar" refutacion.Main
+    // OLD - compiling
+    // javac -d System.getProperty("user.home")+"/HyperDF/classes" -classpath System.getProperty("user.home")+"/HyperDF/classes:/home/onlycparra/HyperDF/lib/javacsv.jar:/home/onlycparra/HyperDF/lib/ga-frame.jar" -encoding MacRoman -sourcepath System.getProperty("user.home")+"/HyperDF/src" -g -Xlint:all -Xlint:-cast -Xlint:-empty -Xlint:-fallthrough -Xlint:-path -Xlint:-processing -Xlint:-serial -Xlint:-unchecked System.getProperty("user.home")+"/HyperDF/src/refutacion/H.java" System.getProperty("user.home")+"/HyperDF/src/parallel/ParallelMain.java" System.getProperty("user.home")+"/HyperDF/src/refutacion/TuplaCheck.java" System.getProperty("user.home")+"/HyperDF/src/btree/Nodo.java" System.getProperty("user.home")+"/HyperDF/src/refutacion/Antecedente.java" System.getProperty("user.home")+"/HyperDF/src/btree/Main.java" System.getProperty("user.home")+"/HyperDF/src/parallel/package-info.java" System.getProperty("user.home")+"/HyperDF/src/refutacion/Main.java" System.getProperty("user.home")+"/HyperDF/src/utils/IteradorCombinacion.java" System.getProperty("user.home")+"/HyperDF/src/refutacion/TestBipMap.java" System.getProperty("user.home")+"/HyperDF/src/refutacion/Hipergrafo.java" System.getProperty("user.home")+"/HyperDF/src/parallel/MainP.java" System.getProperty("user.home")+"/HyperDF/src/btree/ArbolB.java" System.getProperty("user.home")+"/HyperDF/src/refutacion/Refutacion.java" System.getProperty("user.home")+"/HyperDF/src/refutacion/ComparableSet.java" System.getProperty("user.home")+"/HyperDF/src/parallel/ParallelProcess.java" System.getProperty("user.home")+"/HyperDF/src/btree/LlaveEntero.java" System.getProperty("user.home")+"/HyperDF/src/refutacion/Prueba.java" System.getProperty("user.home")+"/HyperDF/src/refutacion/Kavvadias.java" System.getProperty("user.home")+"/HyperDF/src/refutacion/Consecuente.java" 
+    // OLD - Execute en cluster
+    // java -client -classpath System.getProperty("user.home")+"/.adf:/home/onlycparra/HyperDF/classes:/home/onlycparra/HyperDF/lib/javacsv.jar:/home/onlycparra/HyperDF/lib/ga-frame.jar" refutacion.Main
 
     public static void main(String[] args) {
-        
-        if (args.length != 4) {
-            System.err.println("Error, you must execute teh program with parameters: -algoritmo -relation -numAtributos -numTuplas");
+        //args[0] Algorithm. args[1] data source. args[2] # of attributes. args[3] # of tuples
+        for(int z=0;z<150;z++) System.out.println();//Clear Screen
+
+
+
+
+
+        //////////////////////////////////////////////////////////////////////////////////
+        //Briefing
+        if (args.length != 4){//If has been executed without or whit many parameters
+            System.err.println("Error, you must execute the program with parameters: <[BERGE | KAVVADIAS | MURAKAMI | SCHERSON]>  <relation>  <number of attributes>  <number of tuples>");
             System.exit(0);
         }
-        
+        // Setting the chosen Algorithm
         int algoritmoTransversal = 0;
-        if (args[0].equals("BERGE"))
-            algoritmoTransversal = BERGE;
-        else if (args[0].equals("KAVVADIAS"))
-            algoritmoTransversal = KAVVADIAS;
-        else if (args[0].equals("MURAKAMI"))
-            algoritmoTransversal = MURAKAMI;
-        else if (args[0].equals("SCHERSON"))
-            algoritmoTransversal = SCHERSON;
-
-
-        String nomRelacion = "/home/jfuentes/HyperDF/datasets/"+args[1];
+        if (args[0].equals("BERGE")) algoritmoTransversal = BERGE;
+        else if (args[0].equals("KAVVADIAS")) algoritmoTransversal = KAVVADIAS;
+        else if (args[0].equals("MURAKAMI"))  algoritmoTransversal = MURAKAMI;
+        else if (args[0].equals("SCHERSON"))  algoritmoTransversal = SCHERSON;
+        //Setting URL of Data Source, number of attributes and number of tuples
+        String fuente=args[1];
+        String nomRelacion = System.getProperty("user.home")+"/HyperDF/datasets/"+args[1];
         int numAtributos = Integer.parseInt(args[2]);
         int numTuplas = Integer.parseInt(args[3]);
-        
-       /* int algoritmoTransversal=MURAKAMI;
-        String nomRelacion = "/home/jfuentes/HyperDF/train20X500.csv";
-        int numAtributos = 20;
-        int numTuplas = 500;*/
+        System.out.println("Datasource: "+fuente+".\n");
+
+
+
+
+
+        //////////////////////////////////////////////////////////////////////////////////
+        //Encoding
+        System.out.print("Encoding...");
+        long b1=0,encodTime=0,a1=System.currentTimeMillis();
 
         String[][] relacion = null;
         try {
@@ -71,118 +82,100 @@ public class Main {
             System.out.println(e.toString());
             System.exit(0);
         }
-        System.out.println("Relacion codificada");
-
-
-
         int[][] relacionCodificada = codificaRelacion(relacion);
 
-
-        int contadorDF = 0;
-
-        System.out.println();
-        System.out.println("Analisis: Refutaciones maximales encontradas");
+        b1=System.currentTimeMillis();
+        encodTime=(b1-a1)/1000;
+        System.out.println("Done.\t\t\t\t\t\t\t\t"+encodTime+" secs.");
 
 
-        long tiempoInicio = System.currentTimeMillis();
-        double tiempoRefutaciones = 0;
-        double totalTiempo = 0;
 
-        //obtenemos las refutaciones
+
+
+        //███████████████████████████████████████████████████████████████████████████████
+        //Searching Maximals Refutations
+        int contadorDF=0;
+        System.out.println("\nSearching Maximals Refutations (quadratic)...");
+        long b2=0,srchRefTime=0,a2=System.currentTimeMillis();
+
         ArrayList<ArrayList<H>> refutaciones = new ArrayList<ArrayList<H>>(numAtributos);
-        obtenerRefutaciones(relacionCodificada, numAtributos, refutaciones);
+        obtenerRefutaciones(relacionCodificada,refutaciones);
 
-        tiempoRefutaciones = (System.currentTimeMillis() - tiempoInicio)/1000;
+        b2=System.currentTimeMillis();
+        srchRefTime=(b2-a2)/1000;
+        System.out.println("Done.\t\t\t\t\t\t\t\t"+srchRefTime+" secs.");
+        
 
-        System.out.println("busqueda de refutaciones (cuadratico) ok");
 
 
-        String s = "Datasource "+args[1]+": Ejecutando algoritmo de ";
 
-        switch (algoritmoTransversal) {
-        case SCHERSON:
-            s += "SCHERSON";
-            break;
-        case BERGE:
-            s += "BERGE";
-            break;
-        case KAVVADIAS:
-            s += "KAVVADIAS";
-            break;
-        case MURAKAMI:
-            s += "MURAKAMI";
-            break;
-        default:
-            break;
+        //////////////////////////////////////////////////////////////////////////////////
+        //Searching Transversals
+        String alg="";
+        switch (algoritmoTransversal){
+            case SCHERSON: alg="SCHERSON"; break;
+            case BERGE: alg="BERGE"; break;
+            case KAVVADIAS: alg="KAVVADIAS"; break;
+            case MURAKAMI: alg="MURAKAMI"; break;
+            default: break;
         }
-        System.out.println(s);
-        for (ArrayList<H> refutacionesPorConsecuente : refutaciones) {
+        System.out.println("\nSearching Transversals with Algorithm "+alg+"...");
+        long b3=0,srchTransTime=0,a3=System.currentTimeMillis();
 
-            //System.out.println("Complemento Refutaciones:");
+        for (ArrayList<H> refutacionesPorConsecuente : refutaciones) {
             for (H refuta : refutacionesPorConsecuente) {
                 refuta.toComplemento();
-                // System.out.println(refuta);
             }
-
             ArrayList<BitSet> transversales = null;
-
             switch (algoritmoTransversal) {
-            case SCHERSON:
-                transversales = new ArrayList<BitSet>();
-                /* BitSet or = new BitSet(numAtributos);
-                buscaTransversalesScherson(0, refutacionesPorConsecuente.size(), refutacionesPorConsecuente,
-                                           transversales, or); */
-                buscaTransversalesScherson(refutacionesPorConsecuente, transversales, numAtributos);
-                break;
-            case BERGE:
-                //transversales = buscaTransversales(hg, elementos, permutaciones);
-
-                break;
-            case KAVVADIAS:
-                transversales = buscaTransversalesKavvadias(refutacionesPorConsecuente, numAtributos);
-
-                break;
-            case MURAKAMI:
-                 transversales = buscaTransversalesMurakami(refutacionesPorConsecuente, numAtributos);
-                break;
-            default:
-                System.err.println("Debe seleccionar algoritmo de Hipergrafos");
+                case SCHERSON:
+                    transversales = new ArrayList<BitSet>();
+                    buscaTransversalesScherson(refutacionesPorConsecuente, transversales, numAtributos);
+                    break;
+                case BERGE:
+                    System.out.println("This Algorithm does not do anything :P");
+                    break;
+                case KAVVADIAS:
+                    transversales = buscaTransversalesKavvadias(refutacionesPorConsecuente, numAtributos);
+                    break;
+                case MURAKAMI:
+                    transversales = buscaTransversalesMurakami(refutacionesPorConsecuente, numAtributos);
+                    break;
+                default:
+                    System.err.println("Debe seleccionar algoritmo de Hipergrafos");
             }
-
-             /*  System.out.println("DFs encontradas");
-             for (BitSet bits : transversales) {
-                for (int bit = bits.nextSetBit(0); bit >= 0; bit = bits.nextSetBit(bit + 1)) {
-                    System.out.print((bit+1) + ", ");
-                }
-                System.out.print("--> " + (refutacionesPorConsecuente.get(0).getConsecuente()+1) + "\n");
-
-            }   */
             contadorDF += transversales.size();
-           
         }
 
-        totalTiempo =(System.currentTimeMillis() - tiempoInicio)/1000;
+        b3 = System.currentTimeMillis();
+        srchTransTime=(b3-a3)/1000;
+        System.out.println("Done.\t\t\t\t\t\t\t\t"+srchTransTime+" secs.");
 
-        System.out.println("UN TOTAL DE " + contadorDF + " DFs encontradas");
 
-        System.out.println("El tiempo refutaciones es :" + tiempoRefutaciones + " seg");
-        System.out.println("El tiempo de demora total es :" + totalTiempo + " seg");
 
+
+
+        //////////////////////////////////////////////////////////////////////////////////
+        //Showing & loging final Results
+        System.out.println("\nIt has been found " + contadorDF + " FDs.\n\n\n");
         try {
-            BufferedWriter outfile = new BufferedWriter(new FileWriter("/home/jfuentes/HyperDF/logs", true));
-            outfile.write("**************************\n");
-            outfile.write(s+"\n");
-            outfile.write("UN TOTAL DE " + contadorDF + " DFs encontradas\n");
-            outfile.write("El tiempo refutaciones es :" + tiempoRefutaciones + " seg\n");
-            outfile.write("El tiempo de demora total es :" + totalTiempo + " seg\n");
-            outfile.write("**************************\n");
+            BufferedWriter outfile = new BufferedWriter(new FileWriter(System.getProperty("user.home")+"/HyperDF/logs", true));
+            outfile.write("***************************************\n");
+            outfile.write("Datasource:             "+fuente+".\n");
+            outfile.write("Algotithm:              "+alg+".\n");
+            outfile.write("FDs Found:              "+contadorDF+".\n");
+            outfile.write("Encoding Time:          "+encodTime+" secs.\n");
+            outfile.write("Srch Refutations Time:  "+srchRefTime+" secs.\n");
+            outfile.write("Srch Transversals Time: "+srchTransTime+" secs.\n");
+            outfile.write("***************************************\n\n");
             outfile.close();
-
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
+
+    //////////////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////  METHODS  ////////////////////////////////////////
 
     public static String[][] cargaRelacion(String nomRelacion, int numTuplas, int numAtributos) throws Exception {
         CsvReader reader = null;
@@ -204,26 +197,20 @@ public class Main {
         } // end while - recorrido del csv
 
         return relacion;
-
     }
 
-    //funcion que codifica la relacion
-
-    private static int[][] codificaRelacion(String[][] relacion) {
+    //Funcion que codifica la relacion
+    private static int[][] codificaRelacion(String[][] relacion){
         int[][] codificada = new int[relacion.length][relacion[0].length];
         int j = 0;
         while (j < relacion[0].length) {
-
-
             int codigo = 0;
             HashMap<String, Integer> atr1 = new HashMap<String, Integer>();
             for (int i = 0; i < relacion.length; i++) {
                 if (!atr1.containsKey(relacion[i][j])) {
                     atr1.put(relacion[i][j], ++codigo);
-
                 }
                 codificada[i][j] = atr1.get(relacion[i][j]);
-
             }
             // v.addElement(atr1);
             j++;
@@ -231,39 +218,42 @@ public class Main {
         //liberar memoria hashmp
         //v.removeAllElements();
 
+        System.out.println("\nCodification numbers not shown");
+        /*
         //mostrar la relacion codificada
         for (int i = 0; i < codificada.length; i++) {
             for (int k = 0; k < codificada[0].length; k++) {
-                System.out.print("  " + codificada[i][k]);
+                System.out.print(" "+codificada[i][k]);
             }
             System.out.println();
 
         }
+        */
 
 
         return codificada;
     }
 
-    //funcion que obtiene las refutaciones desde la relacion codificada
+    //Funcion que obtiene las refutaciones desde la relacion codificada
+    public static void obtenerRefutaciones(int[][] relacionCodificada,ArrayList<ArrayList<H>> refutaciones){
+        int numAtributos=relacionCodificada[0].length;
+        int numTuplas=relacionCodificada.length;
 
-    public static void obtenerRefutaciones(int[][] relacionCodificada, int numAtributos,
-                                           ArrayList<ArrayList<H>> refutaciones) {
-        int numTuplas = relacionCodificada.length;
-        for (int i = 0; i < numAtributos; i++)
+        for(int i=0;i<numAtributos;i++){
             refutaciones.add(i, new ArrayList<H>());
+        }
 
         //busqueda cuadratica de refutaciones
-        for (int i = 0; i < numTuplas; i++) { // por cada tupla
-	    System.out.println("Busqueda de refutaciones: "+(i*100/numTuplas)+"%");
-            for (int j = i + 1; j < numTuplas; j++) {
-                if (i != j) {
+        for(int i=0;i<numTuplas;i++){//i will be the index of the first tuple to compare
+            for(int j=i+1;j<numTuplas;j++){//j start from the next tuple (i+1), it will be the index of the second tuple to compare
+                if (i!=j){
                     BitSet parDeTuplas = new BitSet(numAtributos);
 
-                    for (int atributo = numAtributos - 1; atributo >= 0; atributo--) {
-                        if (relacionCodificada[i][atributo] == relacionCodificada[j][atributo])
-                            parDeTuplas.set(atributo);
+                    for (int atributo=numAtributos-1;atributo>=0;atributo--) {
+                        if(
+                            relacionCodificada[i][atributo]==relacionCodificada[j][atributo]
+                        ) parDeTuplas.set(atributo);
                     }
-                    //System.out.println(parDeTuplas);
                     if (!parDeTuplas.isEmpty())
                         for (int bit = parDeTuplas.nextClearBit(0); bit >= 0 && bit < numAtributos;
                              bit = parDeTuplas.nextClearBit(bit + 1)) {
@@ -272,17 +262,16 @@ public class Main {
                             agregarRefutacion(new H((BitSet)parDeTuplas.clone(), bit, numAtributos), refutaciones);
                         }
                 }
-
             }
-
+            //Display percentage done
+            float percent=(float)((i+1)*100)/numTuplas;
+            System.out.print("\rSearching Refutations: "+percent+"%");
         }
-
+        System.out.println();
     }
 
-
-    //funcion que agrega una nueva refutacion considerando la maximalidad de esta y las que ya estan
-
-    private static void agregarRefutacion(H refutacion, ArrayList<ArrayList<H>> refutaciones) {
+    //Funcion que agrega una nueva refutacion considerando la maximalidad de esta y las que ya estan
+    private static void agregarRefutacion(H refutacion, ArrayList<ArrayList<H>> refutaciones){
 
         ArrayList<H> refutacionesPorConsecuente = refutaciones.get(refutacion.getConsecuente());
         if (refutacionesPorConsecuente.size() == 0) {
@@ -301,8 +290,8 @@ public class Main {
             } else {
                 if (refutacionesPorConsecuente.get(i).isSubSet(refutacion)) {
                     /* System.out.println("saco " +
-                                       refutacionesPorConsecuente.get(i) +
-                                       " y coloco " + refutacion);   */
+                    refutacionesPorConsecuente.get(i) +
+                    " y coloco " + refutacion);   */
                     refutacionesPorConsecuente.remove(i);
                     refutacionesPorConsecuente.add(refutacion);
                     return;
@@ -318,14 +307,10 @@ public class Main {
 
         // System.out.println("SE ADD REF "+refutacion);
         refutacionesPorConsecuente.add(refutacion);
-
     }
 
-    //funciones para buscar transversales en un hipergrafo
-
-    public static void buscaTransversalesScherson(ArrayList<H> refutacionesPorConsecuente,
-                                                  ArrayList<BitSet> transversalesMinimales, int numAtributos) {
-
+    //Funciones para buscar transversales en un hipergrafo
+    public static void buscaTransversalesScherson(ArrayList<H> refutacionesPorConsecuente,ArrayList<BitSet> transversalesMinimales, int numAtributos){
         ArrayList<BitSet> repositorioTransversales = new ArrayList<BitSet>();
 
         if (refutacionesPorConsecuente.size() <= 1) {
@@ -379,10 +364,7 @@ public class Main {
         McCluskey(repositorioTransversales, transversalesMinimales, numAtributos);
     }
 
-    private static void McCluskey(ArrayList<BitSet> repositorioTransversales, ArrayList<BitSet> transversalesMinimales,
-                                  int numAtributos) {
-
-
+    private static void McCluskey(ArrayList<BitSet> repositorioTransversales, ArrayList<BitSet> transversalesMinimales,int numAtributos) {
         try {
             BufferedWriter outfile = new BufferedWriter(new FileWriter("mccluskey/file_input"));
             String file = "";
@@ -437,12 +419,9 @@ public class Main {
             // Excepciones si hay algún problema al arrancar el ejecutable o al leer su salida.*/
             e.printStackTrace();
         }
-
-
     }
 
-    public static void buscaTransversalesScherson(int fil, int total, ArrayList<H> refutacionesPorConsecuente,
-                                                  ArrayList<BitSet> transversales, BitSet or) {
+    public static void buscaTransversalesScherson(int fil, int total, ArrayList<H> refutacionesPorConsecuente,ArrayList<BitSet> transversales, BitSet or) {
         boolean anterior = false;
         if (fil == total) {
             //System.out.println("transversal: "+or);
@@ -512,13 +491,11 @@ public class Main {
         return;
     }
 
-
-    private static ArrayList<BitSet> buscaTransversalesKavvadias(ArrayList<H> refutacionesPorConsecuente,
-                                                                 int numAtributos) {
+    private static ArrayList<BitSet> buscaTransversalesKavvadias(ArrayList<H> refutacionesPorConsecuente,int numAtributos) {
         ArrayList<BitSet> array = new ArrayList<BitSet>();
 
         try {
-            BufferedWriter outfile = new BufferedWriter(new FileWriter("/home/jfuentes/HyperDF/transversales/hg"));
+            BufferedWriter outfile = new BufferedWriter(new FileWriter(System.getProperty("user.home")+"/HyperDF/transversales/hg"));
             String file = "";
             for (H refutacion : refutacionesPorConsecuente)
                 file += refutacion.toFile();
@@ -531,8 +508,8 @@ public class Main {
         }
 
         StringBuffer args = new StringBuffer();
-        args.append("/home/jfuentes/HyperDF/transversales/./kavv ");
-        args.append(" -i " + "/home/jfuentes/HyperDF/transversales/hg");
+        args.append(System.getProperty("user.home")+"/HyperDF/transversales/./kavv ");
+        args.append(" -i " + System.getProperty("user.home")+"/HyperDF/transversales/hg");
 
 
         //System.out.println("ejecutar " + args);
@@ -586,7 +563,7 @@ public class Main {
         ArrayList<BitSet> array = new ArrayList<BitSet>();
 
         try {
-            BufferedWriter outfile = new BufferedWriter(new FileWriter("/home/jfuentes/HyperDF/transversales/murakami/hg"));
+            BufferedWriter outfile = new BufferedWriter(new FileWriter(System.getProperty("user.home")+"/HyperDF/transversales/murakami/hg"));
             String file = "";
             for (H refutacion : refutacionesPorConsecuente)
                 file += refutacion.toFileSHD();
@@ -598,8 +575,8 @@ public class Main {
         }
 
         StringBuffer args = new StringBuffer();
-        args.append("/home/jfuentes/HyperDF/transversales/murakami/./shd");
-        args.append(" D " + "/home/jfuentes/HyperDF/transversales/murakami/hg /home/jfuentes/HyperDF/transversales/murakami/result.dat");
+        args.append(System.getProperty("user.home")+"/HyperDF/transversales/murakami/./shd");
+        args.append(" D " + System.getProperty("user.home")+"/HyperDF/transversales/murakami/hg /home/onlycparra/HyperDF/transversales/murakami/result.dat");
 
 
         //System.out.println("ejecutar " + args);
@@ -620,7 +597,7 @@ public class Main {
 
         try {
 
-            FileInputStream fstream = new FileInputStream("/home/jfuentes/HyperDF/transversales/murakami/result.dat");
+            FileInputStream fstream = new FileInputStream(System.getProperty("user.home")+"/HyperDF/transversales/murakami/result.dat");
             // Get the object of DataInputStream
             DataInputStream in = new DataInputStream(fstream);
             BufferedReader br = new BufferedReader(new InputStreamReader(in));
