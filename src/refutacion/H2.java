@@ -8,7 +8,7 @@ public class H {
     private int consecuente;
     private boolean prima=false;
     
-    public H(BitSet X, int consecuente, int numAtributos) {
+    public H(BitSet X, int consecuente, int numAtributos){
         this.X=X;
 
         this.consecuente=consecuente;

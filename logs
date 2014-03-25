@@ -448,3 +448,30 @@ UN TOTAL DE 14291732 DFs encontradas
 El tiempo refutaciones es :7067.0 seg
 El tiempo de demora total es :7161.0 seg
 **************************
+***************************************
+Datasource:             train50X500.csv.
+Algotithm:              MURAKAMI.
+FDs Found:              0.
+Encoding Time:          0 secs.
+Srch Refutations Time:  123 secs.
+Srch Transversals Time: 2 secs.
+***************************************
+
+***************************************
+Datasource:             train50X500.csv.
+Algotithm:              MURAKAMI.
+FDs Found:              322856.
+Encoding Time:          0 secs.
+Srch Refutations Time:  123 secs.
+Srch Transversals Time: 4 secs.
+***************************************
+
+***************************************
+Datasource:             train50X500.csv.
+Algotithm:              MURAKAMI.
+FDs Found:              322856.
+Encoding Time:          0 secs.
+Srch Refutations Time:  118 secs.
+Srch Transversals Time: 4 secs.
+***************************************
+

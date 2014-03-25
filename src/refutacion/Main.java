@@ -29,16 +29,10 @@ public class Main {
     public Main() {}
 
     //Compilation
-    //javac -d "/home/username/HyperDF/classes" -classpath "/home/username/HyperDF/classes:/home/username/HyperDF/lib/javacsv.jar:/home/username/HyperDF/lib/ga-frame.jar" -encoding MacRoman -sourcepath "/home/username/HyperDF/src" -g -Xlint:all -Xlint:-cast -Xlint:-empty -Xlint:-fallthrough -Xlint:-path -Xlint:-processing -Xlint:-serial -Xlint:-unchecked "/home/username/HyperDF/src/refutacion/H.java" "/home/username/HyperDF/src/refutacion/TuplaCheck.java" "/home/username/HyperDF/src/refutacion/Antecedente.java" "/home/username/HyperDF/src/refutacion/Main.java" "/home/username/HyperDF/src/utils/IteradorCombinacion.java" "/home/username/HyperDF/src/refutacion/Hipergrafo.java" "/home/username/HyperDF/src/refutacion/Refutacion.java" "/home/username/HyperDF/src/refutacion/Prueba.java" "/home/username/HyperDF/src/refutacion/Kavvadias.java" "/home/username/HyperDF/src/refutacion/Consecuente.java"
+    //javac -d "/home/username/HyperFD/classes" -classpath "/home/username/HyperFD/classes:/home/username/HyperFD/lib/javacsv.jar:/home/username/HyperFD/lib/ga-frame.jar" -encoding MacRoman -sourcepath "/home/username/HyperFD/src" -g -Xlint:all -Xlint:-cast -Xlint:-empty -Xlint:-fallthrough -Xlint:-path -Xlint:-processing -Xlint:-serial -Xlint:-unchecked "/home/username/HyperFD/src/refutacion/RowX.java" "/home/username/HyperFD/src/refutacion/TuplaCheck.java" "/home/username/HyperFD/src/refutacion/Antecedente.java" "/home/username/HyperFD/src/refutacion/Main.java" "/home/username/HyperFD/src/utils/IteradorCombinacion.java" "/home/username/HyperFD/src/refutacion/Hipergrafo.java" "/home/username/HyperFD/src/refutacion/Refutacion.java" "/home/username/HyperFD/src/refutacion/Prueba.java" "/home/username/HyperFD/src/refutacion/Kavvadias.java" "/home/username/HyperFD/src/refutacion/Consecuente.java"
     //Execution
-    //java -client -classpath "/home/username/.adf:/home/username/HyperDF/classes:/home/username/HyperDF/lib/javacsv.jar:/home/username/HyperDF/lib/ga-frame.jar" refutacion.Main MURAKAMI train50X500.csv 50 500
+    //java -client -classpath "/home/username/.adf:/home/username/HyperFD/classes:/home/username/HyperFD/lib/javacsv.jar:/home/username/HyperFD/lib/ga-frame.jar" refutacion.Main MURAKAMI train50X500.csv 50 500
     
-
-    // OLD - compiling
-    // javac -d System.getProperty("user.home")+"/HyperDF/classes" -classpath System.getProperty("user.home")+"/HyperDF/classes:/home/onlycparra/HyperDF/lib/javacsv.jar:/home/onlycparra/HyperDF/lib/ga-frame.jar" -encoding MacRoman -sourcepath System.getProperty("user.home")+"/HyperDF/src" -g -Xlint:all -Xlint:-cast -Xlint:-empty -Xlint:-fallthrough -Xlint:-path -Xlint:-processing -Xlint:-serial -Xlint:-unchecked System.getProperty("user.home")+"/HyperDF/src/refutacion/H.java" System.getProperty("user.home")+"/HyperDF/src/parallel/ParallelMain.java" System.getProperty("user.home")+"/HyperDF/src/refutacion/TuplaCheck.java" System.getProperty("user.home")+"/HyperDF/src/btree/Nodo.java" System.getProperty("user.home")+"/HyperDF/src/refutacion/Antecedente.java" System.getProperty("user.home")+"/HyperDF/src/btree/Main.java" System.getProperty("user.home")+"/HyperDF/src/parallel/package-info.java" System.getProperty("user.home")+"/HyperDF/src/refutacion/Main.java" System.getProperty("user.home")+"/HyperDF/src/utils/IteradorCombinacion.java" System.getProperty("user.home")+"/HyperDF/src/refutacion/TestBipMap.java" System.getProperty("user.home")+"/HyperDF/src/refutacion/Hipergrafo.java" System.getProperty("user.home")+"/HyperDF/src/parallel/MainP.java" System.getProperty("user.home")+"/HyperDF/src/btree/ArbolB.java" System.getProperty("user.home")+"/HyperDF/src/refutacion/Refutacion.java" System.getProperty("user.home")+"/HyperDF/src/refutacion/ComparableSet.java" System.getProperty("user.home")+"/HyperDF/src/parallel/ParallelProcess.java" System.getProperty("user.home")+"/HyperDF/src/btree/LlaveEntero.java" System.getProperty("user.home")+"/HyperDF/src/refutacion/Prueba.java" System.getProperty("user.home")+"/HyperDF/src/refutacion/Kavvadias.java" System.getProperty("user.home")+"/HyperDF/src/refutacion/Consecuente.java" 
-    // OLD - Execute en cluster
-    // java -client -classpath System.getProperty("user.home")+"/.adf:/home/onlycparra/HyperDF/classes:/home/onlycparra/HyperDF/lib/javacsv.jar:/home/onlycparra/HyperDF/lib/ga-frame.jar" refutacion.Main
-
     public static void main(String[] args) {
         //args[0] Algorithm. args[1] data source. args[2] # of attributes. args[3] # of tuples
         for(int z=0;z<150;z++) System.out.println();//Clear Screen
@@ -61,7 +55,7 @@ public class Main {
         else if (args[0].equals("SCHERSON"))  algoritmoTransversal = SCHERSON;
         //Setting URL of Data Source, number of attributes and number of tuples
         String fuente=args[1];
-        String nomRelacion = System.getProperty("user.home")+"/HyperDF/datasets/"+args[1];
+        String nomRelacion = System.getProperty("user.home")+"/HyperFD/datasets/"+args[1];
         int numAtributos = Integer.parseInt(args[2]);
         int numTuplas = Integer.parseInt(args[3]);
         System.out.println("Datasource: "+fuente+".\n");
@@ -98,7 +92,7 @@ public class Main {
         System.out.println("\nSearching Maximals Refutations (quadratic)...");
         long b2=0,srchRefTime=0,a2=System.currentTimeMillis();
 
-        ArrayList<ArrayList<H>> refutaciones = new ArrayList<ArrayList<H>>(numAtributos);
+        ArrayList<ArrayList<RowX>> refutaciones = new ArrayList<ArrayList<RowX>>(numAtributos);
         obtenerRefutaciones(relacionCodificada,refutaciones);
 
         b2=System.currentTimeMillis();
@@ -122,8 +116,8 @@ public class Main {
         System.out.println("\nSearching Transversals with Algorithm "+alg+"...");
         long b3=0,srchTransTime=0,a3=System.currentTimeMillis();
 
-        for (ArrayList<H> refutacionesPorConsecuente : refutaciones) {
-            for (H refuta : refutacionesPorConsecuente) {
+        for (ArrayList<RowX> refutacionesPorConsecuente : refutaciones) {
+            for (RowX refuta : refutacionesPorConsecuente) {
                 refuta.toComplemento();
             }
             ArrayList<BitSet> transversales = null;
@@ -159,7 +153,7 @@ public class Main {
         //Showing & loging final Results
         System.out.println("\nIt has been found " + contadorDF + " FDs.\n\n\n");
         try {
-            BufferedWriter outfile = new BufferedWriter(new FileWriter(System.getProperty("user.home")+"/HyperDF/logs", true));
+            BufferedWriter outfile = new BufferedWriter(new FileWriter(System.getProperty("user.home")+"/HyperFD/logs", true));
             outfile.write("***************************************\n");
             outfile.write("Datasource:             "+fuente+".\n");
             outfile.write("Algotithm:              "+alg+".\n");
@@ -235,12 +229,12 @@ public class Main {
     }
 
     //Funcion que obtiene las refutaciones desde la relacion codificada
-    public static void obtenerRefutaciones(int[][] relacionCodificada,ArrayList<ArrayList<H>> refutaciones){
+    public static void obtenerRefutaciones(int[][] relacionCodificada,ArrayList<ArrayList<RowX>> refutaciones){
         int numAtributos=relacionCodificada[0].length;
         int numTuplas=relacionCodificada.length;
 
         for(int i=0;i<numAtributos;i++){
-            refutaciones.add(i, new ArrayList<H>());
+            refutaciones.add(i, new ArrayList<RowX>());
         }
 
         //busqueda cuadratica de refutaciones
@@ -259,7 +253,7 @@ public class Main {
                              bit = parDeTuplas.nextClearBit(bit + 1)) {
                             //System.out.println("tupla [" + i + "," + j + "]: bit:" + bit + " refutaciones: " +
                             // parDeTuplas);
-                            agregarRefutacion(new H((BitSet)parDeTuplas.clone(), bit, numAtributos), refutaciones);
+                            agregarRefutacion(new RowX((BitSet)parDeTuplas.clone(), bit, numAtributos), refutaciones);
                         }
                 }
             }
@@ -271,9 +265,9 @@ public class Main {
     }
 
     //Funcion que agrega una nueva refutacion considerando la maximalidad de esta y las que ya estan
-    private static void agregarRefutacion(H refutacion, ArrayList<ArrayList<H>> refutaciones){
+    private static void agregarRefutacion(RowX refutacion, ArrayList<ArrayList<RowX>> refutaciones){
 
-        ArrayList<H> refutacionesPorConsecuente = refutaciones.get(refutacion.getConsecuente());
+        ArrayList<RowX> refutacionesPorConsecuente = refutaciones.get(refutacion.getConsecuente());
         if (refutacionesPorConsecuente.size() == 0) {
             refutacionesPorConsecuente.add(refutacion);
             return;
@@ -310,7 +304,7 @@ public class Main {
     }
 
     //Funciones para buscar transversales en un hipergrafo
-    public static void buscaTransversalesScherson(ArrayList<H> refutacionesPorConsecuente,ArrayList<BitSet> transversalesMinimales, int numAtributos){
+    public static void buscaTransversalesScherson(ArrayList<RowX> refutacionesPorConsecuente,ArrayList<BitSet> transversalesMinimales, int numAtributos){
         ArrayList<BitSet> repositorioTransversales = new ArrayList<BitSet>();
 
         if (refutacionesPorConsecuente.size() <= 1) {
@@ -421,7 +415,7 @@ public class Main {
         }
     }
 
-    public static void buscaTransversalesScherson(int fil, int total, ArrayList<H> refutacionesPorConsecuente,ArrayList<BitSet> transversales, BitSet or) {
+    public static void buscaTransversalesScherson(int fil, int total, ArrayList<RowX> refutacionesPorConsecuente,ArrayList<BitSet> transversales, BitSet or) {
         boolean anterior = false;
         if (fil == total) {
             //System.out.println("transversal: "+or);
@@ -491,13 +485,13 @@ public class Main {
         return;
     }
 
-    private static ArrayList<BitSet> buscaTransversalesKavvadias(ArrayList<H> refutacionesPorConsecuente,int numAtributos) {
+    private static ArrayList<BitSet> buscaTransversalesKavvadias(ArrayList<RowX> refutacionesPorConsecuente,int numAtributos) {
         ArrayList<BitSet> array = new ArrayList<BitSet>();
 
         try {
-            BufferedWriter outfile = new BufferedWriter(new FileWriter(System.getProperty("user.home")+"/HyperDF/transversales/hg"));
+            BufferedWriter outfile = new BufferedWriter(new FileWriter(System.getProperty("user.home")+"/HyperFD/transversales/hg"));
             String file = "";
-            for (H refutacion : refutacionesPorConsecuente)
+            for (RowX refutacion : refutacionesPorConsecuente)
                 file += refutacion.toFile();
             outfile.write(file);
             //System.out.println("GRAPH TO FILE \n"+hipergrafo.toFile());
@@ -508,8 +502,8 @@ public class Main {
         }
 
         StringBuffer args = new StringBuffer();
-        args.append(System.getProperty("user.home")+"/HyperDF/transversales/./kavv ");
-        args.append(" -i " + System.getProperty("user.home")+"/HyperDF/transversales/hg");
+        args.append(System.getProperty("user.home")+"/HyperFD/transversales/./kavv ");
+        args.append(" -i " + System.getProperty("user.home")+"/HyperFD/transversales/hg");
 
 
         //System.out.println("ejecutar " + args);
@@ -559,13 +553,13 @@ public class Main {
         return array;
     }
 
-    private static ArrayList<BitSet> buscaTransversalesMurakami(ArrayList<H> refutacionesPorConsecuente, int numAtributos) {
+    private static ArrayList<BitSet> buscaTransversalesMurakami(ArrayList<RowX> refutacionesPorConsecuente, int numAtributos) {
         ArrayList<BitSet> array = new ArrayList<BitSet>();
 
         try {
-            BufferedWriter outfile = new BufferedWriter(new FileWriter(System.getProperty("user.home")+"/HyperDF/transversales/murakami/hg"));
+            BufferedWriter outfile = new BufferedWriter(new FileWriter(System.getProperty("user.home")+"/HyperFD/transversales/murakami/hg"));
             String file = "";
-            for (H refutacion : refutacionesPorConsecuente)
+            for (RowX refutacion : refutacionesPorConsecuente)
                 file += refutacion.toFileSHD();
             outfile.write(file);
             outfile.close();
@@ -575,8 +569,8 @@ public class Main {
         }
 
         StringBuffer args = new StringBuffer();
-        args.append(System.getProperty("user.home")+"/HyperDF/transversales/murakami/./shd");
-        args.append(" D " + System.getProperty("user.home")+"/HyperDF/transversales/murakami/hg /home/onlycparra/HyperDF/transversales/murakami/result.dat");
+        args.append(System.getProperty("user.home")+"/HyperFD/transversales/murakami/./shd");
+        args.append(" D " + System.getProperty("user.home")+"/HyperFD/transversales/murakami/hg /home/onlycparra/HyperFD/transversales/murakami/result.dat");
 
 
         //System.out.println("ejecutar " + args);
@@ -597,7 +591,7 @@ public class Main {
 
         try {
 
-            FileInputStream fstream = new FileInputStream(System.getProperty("user.home")+"/HyperDF/transversales/murakami/result.dat");
+            FileInputStream fstream = new FileInputStream(System.getProperty("user.home")+"/HyperFD/transversales/murakami/result.dat");
             // Get the object of DataInputStream
             DataInputStream in = new DataInputStream(fstream);
             BufferedReader br = new BufferedReader(new InputStreamReader(in));
