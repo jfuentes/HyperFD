@@ -2,6 +2,7 @@
 package refutacion;
 
 import java.util.ArrayList;
+import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.HashMap;
 import java.util.StringTokenizer;
@@ -32,11 +33,9 @@ public class Main {
     //javac -d "/home/username/HyperFD/classes" -classpath "/home/username/HyperFD/classes:/home/username/HyperFD/lib/javacsv.jar:/home/username/HyperFD/lib/ga-frame.jar" -encoding MacRoman -sourcepath "/home/username/HyperFD/src" -g -Xlint:all -Xlint:-cast -Xlint:-empty -Xlint:-fallthrough -Xlint:-path -Xlint:-processing -Xlint:-serial -Xlint:-unchecked "/home/username/HyperFD/src/refutacion/RowX.java" "/home/username/HyperFD/src/refutacion/TuplaCheck.java" "/home/username/HyperFD/src/refutacion/Antecedente.java" "/home/username/HyperFD/src/refutacion/Main.java" "/home/username/HyperFD/src/utils/IteradorCombinacion.java" "/home/username/HyperFD/src/refutacion/Hipergrafo.java" "/home/username/HyperFD/src/refutacion/Refutacion.java" "/home/username/HyperFD/src/refutacion/Prueba.java" "/home/username/HyperFD/src/refutacion/Kavvadias.java" "/home/username/HyperFD/src/refutacion/Consecuente.java"
     //Execution
     //java -client -classpath "/home/username/.adf:/home/username/HyperFD/classes:/home/username/HyperFD/lib/javacsv.jar:/home/username/HyperFD/lib/ga-frame.jar" refutacion.Main MURAKAMI train50X500.csv 50 500
-    
     public static void main(String[] args) {
         //args[0] Algorithm. args[1] data source. args[2] # of attributes. args[3] # of tuples
         for(int z=0;z<150;z++) System.out.println();//Clear Screen
-
 
 
 
@@ -88,7 +87,6 @@ public class Main {
 
         //███████████████████████████████████████████████████████████████████████████████
         //Searching Maximals Refutations
-        int contadorDF=0;
         System.out.println("\nSearching Maximals Refutations (quadratic)...");
         long b2=0,srchRefTime=0,a2=System.currentTimeMillis();
 
@@ -105,39 +103,23 @@ public class Main {
 
         //////////////////////////////////////////////////////////////////////////////////
         //Searching Transversals
-        String alg="";
-        switch (algoritmoTransversal){
+        String alg="MURAKAMI (Fijo)";
+        /*switch (algoritmoTransversal){
             case SCHERSON: alg="SCHERSON"; break;
             case BERGE: alg="BERGE"; break;
             case KAVVADIAS: alg="KAVVADIAS"; break;
             case MURAKAMI: alg="MURAKAMI"; break;
             default: break;
-        }
+        }*/
         System.out.println("\nSearching Transversals with Algorithm "+alg+"...");
         long b3=0,srchTransTime=0,a3=System.currentTimeMillis();
 
+        int contadorDF=0,i=0;
         for (ArrayList<RowX> refutacionesPorConsecuente : refutaciones) {
-            for (RowX refuta : refutacionesPorConsecuente) {
-                refuta.toComplemento();
-            }
-            ArrayList<BitSet> transversales = null;
-            switch (algoritmoTransversal) {
-                case SCHERSON:
-                    transversales = new ArrayList<BitSet>();
-                    buscaTransversalesScherson(refutacionesPorConsecuente, transversales, numAtributos);
-                    break;
-                case BERGE:
-                    System.out.println("This Algorithm does not do anything :P");
-                    break;
-                case KAVVADIAS:
-                    transversales = buscaTransversalesKavvadias(refutacionesPorConsecuente, numAtributos);
-                    break;
-                case MURAKAMI:
-                    transversales = buscaTransversalesMurakami(refutacionesPorConsecuente, numAtributos);
-                    break;
-                default:
-                    System.err.println("Debe seleccionar algoritmo de Hipergrafos");
-            }
+            for (RowX refuta : refutacionesPorConsecuente) refuta.toComplemento();
+            ArrayList<BitSet> transversales=buscaTransversalesMurakami(refutacionesPorConsecuente, numAtributos);
+            //System.out.println(transversales.size()+" FD /t---> A["+i+"]");
+            i++;
             contadorDF += transversales.size();
         }
 
@@ -192,9 +174,7 @@ public class Main {
 
         return relacion;
     }
-
-    //Funcion que codifica la relacion
-    private static int[][] codificaRelacion(String[][] relacion){
+    private static int[][] codificaRelacion(String[][] relacion){//Funcion que codifica la relacion
         int[][] codificada = new int[relacion.length][relacion[0].length];
         int j = 0;
         while (j < relacion[0].length) {
@@ -228,6 +208,7 @@ public class Main {
         return codificada;
     }
 
+
     //Funcion que obtiene las refutaciones desde la relacion codificada
     public static void obtenerRefutaciones(int[][] relacionCodificada,ArrayList<ArrayList<RowX>> refutaciones){
         int numAtributos=relacionCodificada[0].length;
@@ -243,18 +224,19 @@ public class Main {
                 if (i!=j){
                     BitSet parDeTuplas = new BitSet(numAtributos);
 
-                    for (int atributo=numAtributos-1;atributo>=0;atributo--) {
-                        if(
-                            relacionCodificada[i][atributo]==relacionCodificada[j][atributo]
-                        ) parDeTuplas.set(atributo);
+                    //Building BitSet from two tuples s & t, if s[a]==t[a] --> bitset[a]=1
+                    for (int atributo=numAtributos-1;atributo>=0;atributo--){
+                        if(relacionCodificada[i][atributo]==relacionCodificada[j][atributo]){
+                            parDeTuplas.set(atributo);
+                        }
                     }
-                    if (!parDeTuplas.isEmpty())
-                        for (int bit = parDeTuplas.nextClearBit(0); bit >= 0 && bit < numAtributos;
-                             bit = parDeTuplas.nextClearBit(bit + 1)) {
-                            //System.out.println("tupla [" + i + "," + j + "]: bit:" + bit + " refutaciones: " +
-                            // parDeTuplas);
+
+                    if (!parDeTuplas.isEmpty()){
+                        for(int bit=parDeTuplas.nextClearBit(0); 0<=bit&&bit<numAtributos; bit=parDeTuplas.nextClearBit(bit+1)){
+                            //System.out.println("Tupla["+i+","+j+"]: bit: "+bit+". Refutaciones: "+parDeTuplas);
                             agregarRefutacion(new RowX((BitSet)parDeTuplas.clone(), bit, numAtributos), refutaciones);
                         }
+                    }
                 }
             }
             //Display percentage done
@@ -263,6 +245,7 @@ public class Main {
         }
         System.out.println();
     }
+
 
     //Funcion que agrega una nueva refutacion considerando la maximalidad de esta y las que ya estan
     private static void agregarRefutacion(RowX refutacion, ArrayList<ArrayList<RowX>> refutaciones){
@@ -303,264 +286,14 @@ public class Main {
         refutacionesPorConsecuente.add(refutacion);
     }
 
-    //Funciones para buscar transversales en un hipergrafo
-    public static void buscaTransversalesScherson(ArrayList<RowX> refutacionesPorConsecuente,ArrayList<BitSet> transversalesMinimales, int numAtributos){
-        ArrayList<BitSet> repositorioTransversales = new ArrayList<BitSet>();
 
-        if (refutacionesPorConsecuente.size() <= 1) {
-            if (refutacionesPorConsecuente.size() == 1)
-                transversalesMinimales.add(refutacionesPorConsecuente.get(0).getX());
-            return;
-        } else {
-            BitSet primera = refutacionesPorConsecuente.get(0).getX();
-            BitSet segunda = refutacionesPorConsecuente.get(1).getX();
-            for (int bit = segunda.nextSetBit(0); bit >= 0; bit = segunda.nextSetBit(bit + 1)) {
-                for (int bit2 = primera.nextSetBit(0); bit2 >= 0; bit2 = primera.nextSetBit(bit2 + 1)) {
-                    BitSet t = new BitSet(numAtributos);
-                    t.set(bit);
-                    t.set(bit2);
-                    repositorioTransversales.add(t);
-                }
-            }
-
-            int primerasTransversales = repositorioTransversales.size();
-
-            BitSet refutacion, transv;
-            for (int i = 2; i < refutacionesPorConsecuente.size(); i++) {
-                refutacion = refutacionesPorConsecuente.get(i).getX();
-                int contBit = 0;
-                for (int bit = refutacion.nextSetBit(0); bit >= 0; bit = refutacion.nextSetBit(bit + 1)) {
-                    contBit++;
-                    if (refutacion.cardinality() == contBit) {
-                        for (int j = 0; j < primerasTransversales; j++)
-                            repositorioTransversales.get(j).set(bit);
-                    } else {
-                        for (int j = 0; j < primerasTransversales; j++) {
-
-                            transv = repositorioTransversales.get(j);
-
-                            BitSet t = (BitSet)transv.clone();
-                            t.set(bit);
-                            repositorioTransversales.add(t);
-
-                        }
-                    }
-                }
-
-            }
-        }
-
-        /* System.out.println("transversales totales:");
-        for (BitSet tran : repositorioTransversales) {
-            System.out.println(tran);
-        } */
-
-        McCluskey(repositorioTransversales, transversalesMinimales, numAtributos);
-    }
-
-    private static void McCluskey(ArrayList<BitSet> repositorioTransversales, ArrayList<BitSet> transversalesMinimales,int numAtributos) {
-        try {
-            BufferedWriter outfile = new BufferedWriter(new FileWriter("mccluskey/file_input"));
-            String file = "";
-            file += (numAtributos + 1) + "\n";
-            //file+=repositorioTransversales.size()+"\n";
-            //file+="*****\n";
-            for (BitSet refutacion : repositorioTransversales)
-                file += BitSetUtil.bitSetToInt(refutacion, 0, 32) + "\n";
-            outfile.write(file);
-            //System.out.println("GRAPH TO FILE \n"+hipergrafo.toFile());
-            outfile.close();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        StringBuffer args = new StringBuffer();
-        args.append("./mccluskey/quine_mc_cluskey_transversals");
-        args.append(" mccluskey/file_input");
-
-
-        //System.out.println("ejecutar " + args);
-
-        try {
-            // Se lanza el ejecutable.
-
-            Process p = Runtime.getRuntime().exec(args.toString());
-
-            // Se obtiene el stream de salida del programa
-            InputStream is = p.getInputStream();
-
-            /* Se prepara un bufferedReader para poder leer la salida más comodamente. */
-            BufferedReader br = new BufferedReader(new InputStreamReader(is));
-
-            // Se lee la primera linea
-            String aux = br.readLine();
-
-            // Mientras se haya leido alguna linea
-
-            while (aux != null && aux.length() > 0) {
-                // Se escribe la linea en pantalla
-                //System.out.println (aux);
-                BitSet li = new BitSet(numAtributos);
-                BitSetUtil.intToBitSet(li, 0, numAtributos + 1, Integer.parseInt(aux));
-
-                transversalesMinimales.add(li);
-                // y se lee la siguiente.
-
-                aux = br.readLine();
-            }
-        } catch (Exception e) {
-            // Excepciones si hay algún problema al arrancar el ejecutable o al leer su salida.*/
-            e.printStackTrace();
-        }
-    }
-
-    public static void buscaTransversalesScherson(int fil, int total, ArrayList<RowX> refutacionesPorConsecuente,ArrayList<BitSet> transversales, BitSet or) {
-        boolean anterior = false;
-        if (fil == total) {
-            //System.out.println("transversal: "+or);
-            agregaTransversal(transversales, or);
-            return;
-        } else {
-            BitSet hiperarista = refutacionesPorConsecuente.get(fil).getX();
-            for (int bit = hiperarista.nextSetBit(0); bit >= 0; bit = hiperarista.nextSetBit(bit + 1)) {
-                //System.out.println("verificalndo nivel "+fil+" con bit "+bit);
-                if (or.get(bit))
-                    anterior = true;
-                else
-                    or.set(bit);
-                buscaTransversalesScherson(fil + 1, total, refutacionesPorConsecuente, transversales, or);
-                if (!anterior)
-                    or.set(bit, false);
-                anterior = false;
-            }
-        }
-    }
-
-    public static void agregaTransversal(ArrayList<BitSet> transversales, BitSet candidata) {
-        BitSet resp1, resp2, resp3;
-        if (transversales.size() == 0)
-            transversales.add((BitSet)candidata.clone());
-        else
-            for (int i = 0; i < transversales.size(); i++) {
-
-                resp1 = (BitSet)transversales.get(i).clone();
-                resp2 = (BitSet)transversales.get(i).clone();
-                resp1.and(candidata);
-                resp3 = (BitSet)resp1.clone();
-                resp3.xor(resp2);
-                if (resp3.isEmpty()) { // si A subset b
-                    return;
-
-                } else { //si candata es subconjunto de lo que tengo
-                    resp1.xor(candidata);
-                    if (resp1.isEmpty()) { //Si b subset A
-                        //System.out.println("candidata "+candidata+" es subconjunto de "+transversales.get(i)+", se intercambian" );
-                        transversales.remove(i);
-
-                        while (i < transversales.size()) {
-                            resp1 = (BitSet)transversales.get(i).clone();
-                            resp2 = (BitSet)transversales.get(i).clone();
-                            resp1.and(candidata);
-
-                            resp1.xor(candidata);
-                            if (resp1.isEmpty()) {
-                                //System.out.println("Elimine otro subconjunto de candidata");
-                                transversales.remove(i);
-
-                            } else
-                                i++;
-                        }
-
-                        transversales.add((BitSet)candidata.clone());
-
-                        return;
-                    }
-                }
-
-
-            }
-        //System.out.println("Se agrega transversal "+candidata);
-        transversales.add((BitSet)candidata.clone());
-        return;
-    }
-
-    private static ArrayList<BitSet> buscaTransversalesKavvadias(ArrayList<RowX> refutacionesPorConsecuente,int numAtributos) {
-        ArrayList<BitSet> array = new ArrayList<BitSet>();
-
-        try {
-            BufferedWriter outfile = new BufferedWriter(new FileWriter(System.getProperty("user.home")+"/HyperFD/transversales/hg"));
-            String file = "";
-            for (RowX refutacion : refutacionesPorConsecuente)
-                file += refutacion.toFile();
-            outfile.write(file);
-            //System.out.println("GRAPH TO FILE \n"+hipergrafo.toFile());
-            outfile.close();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        StringBuffer args = new StringBuffer();
-        args.append(System.getProperty("user.home")+"/HyperFD/transversales/./kavv ");
-        args.append(" -i " + System.getProperty("user.home")+"/HyperFD/transversales/hg");
-
-
-        //System.out.println("ejecutar " + args);
-
-        try {
-            // Se lanza el ejecutable.
-
-            Process p = Runtime.getRuntime().exec(args.toString());
-
-            // Se obtiene el stream de salida del programa
-            InputStream is = p.getInputStream();
-
-            /* Se prepara un bufferedReader para poder leer la salida más comodamente. */
-            BufferedReader br = new BufferedReader(new InputStreamReader(is));
-
-            // Se lee la primera linea
-            String aux = br.readLine();
-
-            // Mientras se haya leido alguna linea
-
-            while (aux != null && aux.length() > 0) {
-                // Se escribe la linea en pantalla
-                //System.out.println (aux);
-                if (aux.charAt(0) != '#') {
-                    BitSet li = new BitSet(numAtributos);
-                    StringTokenizer stk = new StringTokenizer(aux, ",");
-                    String s = "";
-                    while (stk.hasMoreTokens()) {
-                        s = stk.nextToken();
-
-                        if (!s.equals("")) {
-                            li.set(Integer.parseInt(s));
-
-                        }
-                    }
-                    array.add(li);
-                    // y se lee la siguiente.
-                }
-                aux = br.readLine();
-            }
-	    is.close();
-        } catch (Exception e) {
-            // Excepciones si hay algún problema al arrancar el ejecutable o al leer su salida.*/
-            e.printStackTrace();
-        }
-
-        return array;
-    }
-
-    private static ArrayList<BitSet> buscaTransversalesMurakami(ArrayList<RowX> refutacionesPorConsecuente, int numAtributos) {
+    private static ArrayList<BitSet> buscaTransversalesMurakami(ArrayList<RowX> refutacionesPorConsecuente,int numAtributos) {
         ArrayList<BitSet> array = new ArrayList<BitSet>();
 
         try {
             BufferedWriter outfile = new BufferedWriter(new FileWriter(System.getProperty("user.home")+"/HyperFD/transversales/murakami/hg"));
             String file = "";
-            for (RowX refutacion : refutacionesPorConsecuente)
-                file += refutacion.toFileSHD();
+            for (RowX refutacion : refutacionesPorConsecuente) file+=refutacion.toFileSHD();
             outfile.write(file);
             outfile.close();
 
@@ -571,26 +304,19 @@ public class Main {
         StringBuffer args = new StringBuffer();
         args.append(System.getProperty("user.home")+"/HyperFD/transversales/murakami/./shd");
         args.append(" D " + System.getProperty("user.home")+"/HyperFD/transversales/murakami/hg /home/onlycparra/HyperFD/transversales/murakami/result.dat");
-
-
         //System.out.println("ejecutar " + args);
-
 
         try {
             // Se lanza el ejecutable.
-
             Process p = Runtime.getRuntime().exec(args.toString());
-	    p.waitFor();
+            p.waitFor();
             // Mientras se haya leido alguna linea
-
-
-        } catch (Exception e) {
+        }catch (Exception e){
             // Excepciones si hay algún problema al arrancar el ejecutable o al leer su salida.
             e.printStackTrace();
         }
 
         try {
-
             FileInputStream fstream = new FileInputStream(System.getProperty("user.home")+"/HyperFD/transversales/murakami/result.dat");
             // Get the object of DataInputStream
             DataInputStream in = new DataInputStream(fstream);
@@ -603,18 +329,16 @@ public class Main {
                 BitSet li = new BitSet(numAtributos);
                 StringTokenizer stk = new StringTokenizer(strLine, " ");
                 String s = "";
-                while (stk.hasMoreTokens()) {
-                    s = stk.nextToken();
-
-                    if (!s.equals(""))
-                        li.set(Integer.parseInt(s));
+                while (stk.hasMoreTokens()){
+                    s=stk.nextToken();
+                    if (!s.equals("")) li.set(Integer.parseInt(s));
                 }
                 //System.out.println("DF : "+li);
                 array.add(li);
             }
             in.close();
-	    fstream.close();
-        } catch (IOException e) {
+            fstream.close();
+        }catch (IOException e) {
             e.printStackTrace();
         }
 

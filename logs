@@ -475,3 +475,93 @@ Srch Refutations Time:  118 secs.
 Srch Transversals Time: 4 secs.
 ***************************************
 
+***************************************
+Datasource:             train50X500.csv.
+Algotithm:              MURAKAMI.
+FDs Found:              322856.
+Encoding Time:          0 secs.
+Srch Refutations Time:  124 secs.
+Srch Transversals Time: 4 secs.
+***************************************
+
+***************************************
+Datasource:             train50X500.csv.
+Algotithm:              MURAKAMI.
+FDs Found:              322856.
+Encoding Time:          0 secs.
+Srch Refutations Time:  168 secs.
+Srch Transversals Time: 4 secs.
+***************************************
+
+***************************************
+Datasource:             train50X500.csv.
+Algotithm:              MURAKAMI.
+FDs Found:              322856.
+Encoding Time:          0 secs.
+Srch Refutations Time:  165 secs.
+Srch Transversals Time: 4 secs.
+***************************************
+
+***************************************
+Datasource:             train50X500.csv.
+Algotithm:              MURAKAMI.
+FDs Found:              322856.
+Encoding Time:          0 secs.
+Srch Refutations Time:  122 secs.
+Srch Transversals Time: 4 secs.
+***************************************
+
+***************************************
+Datasource:             train50X500.csv.
+Algotithm:              MURAKAMI (Fijo).
+FDs Found:              322856.
+Encoding Time:          0 secs.
+Srch Refutations Time:  124 secs.
+Srch Transversals Time: 4 secs.
+***************************************
+
+***************************************
+Datasource:             train50X500.csv.
+Algotithm:              MURAKAMI (Fijo).
+FDs Found:              322856.
+Encoding Time:          0 secs.
+Srch Refutations Time:  125 secs.
+Srch Transversals Time: 4 secs.
+***************************************
+
+***************************************
+Datasource:             train50X500.csv.
+Algotithm:              MURAKAMI (Fijo).
+FDs Found:              322856.
+Encoding Time:          0 secs.
+Srch Refutations Time:  125 secs.
+Srch Transversals Time: 4 secs.
+***************************************
+
+***************************************
+Datasource:             train50X500.csv.
+Algotithm:              MURAKAMI (Fijo).
+FDs Found:              322856.
+Encoding Time:          0 secs.
+Srch Refutations Time:  126 secs.
+Srch Transversals Time: 4 secs.
+***************************************
+
+***************************************
+Datasource:             train50X500.csv.
+Algotithm:              MURAKAMI (Fijo).
+FDs Found:              322856.
+Encoding Time:          0 secs.
+Srch Refutations Time:  126 secs.
+Srch Transversals Time: 4 secs.
+***************************************
+
+***************************************
+Datasource:             train50X500.csv.
+Algotithm:              MURAKAMI (Fijo).
+FDs Found:              322856.
+Encoding Time:          0 secs.
+Srch Refutations Time:  137 secs.
+Srch Transversals Time: 4 secs.
+***************************************
+
