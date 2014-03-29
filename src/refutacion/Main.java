@@ -19,8 +19,6 @@ import java.io.InputStreamReader;
 import com.csvreader.CsvReader;
 import de.htwdd.ga.util.BitSetUtil;
 
-//Main Ordenado Y listo para subir
-//LOL
 public class Main {
     private static final int SCHERSON = 0;
     private static final int BERGE = 1;
@@ -68,14 +66,14 @@ public class Main {
         System.out.print("Encoding...");
         long b1=0,encodTime=0,a1=System.currentTimeMillis();
 
-        String[][] relacion = null;
-        try {
-            relacion = cargaRelacion(nomRelacion, numTuplas, numAtributos);
-        } catch (Exception e) {
+        String[][] relacion=null;
+        try{
+            relacion=cargaRelacion(nomRelacion,numTuplas,numAtributos);
+        }catch(Exception e){
             System.out.println(e.toString());
             System.exit(0);
         }
-        int[][] relacionCodificada = codificaRelacion(relacion);
+        int[][] relacionCodificada=codificaRelacion(relacion);
 
         b1=System.currentTimeMillis();
         encodTime=(b1-a1)/1000;
@@ -90,12 +88,19 @@ public class Main {
         System.out.println("\nSearching Maximals Refutations (quadratic)...");
         long b2=0,srchRefTime=0,a2=System.currentTimeMillis();
 
-        ArrayList<ArrayList<RowX>> refutaciones = new ArrayList<ArrayList<RowX>>(numAtributos);
-        obtenerRefutaciones(relacionCodificada,refutaciones);
+        ArrayList<RowX[]> matrices=new ArrayList<RowX[]>(numAtributos);//lista de matrices para cada atributo
+        ArrayList<Integer> sizes=new ArrayList<Integer>(numAtributos);//tamaño ocupado de cada matriz RowX[]
+
+        for(int i=0;i<numAtributos;i++){
+            matrices.add(i, new RowX[25000]);
+            sizes.add(i,0);
+        }
+        obtenerRefutaciones(relacionCodificada,matrices,sizes);
 
         b2=System.currentTimeMillis();
         srchRefTime=(b2-a2)/1000;
         System.out.println("Done.\t\t\t\t\t\t\t\t"+srchRefTime+" secs.");
+
         
 
 
@@ -114,12 +119,13 @@ public class Main {
         System.out.println("\nSearching Transversals with Algorithm "+alg+"...");
         long b3=0,srchTransTime=0,a3=System.currentTimeMillis();
 
-        int contadorDF=0,i=0;
-        for (ArrayList<RowX> refutacionesPorConsecuente : refutaciones) {
-            for (RowX refuta : refutacionesPorConsecuente) refuta.toComplemento();
-            ArrayList<BitSet> transversales=buscaTransversalesMurakami(refutacionesPorConsecuente, numAtributos);
-            //System.out.println(transversales.size()+" FD /t---> A["+i+"]");
-            i++;
+        int contadorDF=0;
+
+        for(int i=0;i<matrices.size();i++){//para todas las matrices
+            RowX[] matrixH=matrices.get(i);
+            for(int j=0;j<sizes.get(i);j++) matrixH[j].toComplemento();//invertimos todo
+
+            ArrayList<BitSet> transversales=buscaTransversalesMurakami(matrixH,sizes.get(i),numAtributos);
             contadorDF += transversales.size();
         }
 
@@ -210,32 +216,30 @@ public class Main {
 
 
     //Funcion que obtiene las refutaciones desde la relacion codificada
-    public static void obtenerRefutaciones(int[][] relacionCodificada,ArrayList<ArrayList<RowX>> refutaciones){
+    public static void obtenerRefutaciones(int[][] relacionCodificada,ArrayList<RowX[]> matrices,ArrayList<Integer> sizes){
         int numAtributos=relacionCodificada[0].length;
         int numTuplas=relacionCodificada.length;
-
-        for(int i=0;i<numAtributos;i++){
-            refutaciones.add(i, new ArrayList<RowX>());
-        }
-
         //busqueda cuadratica de refutaciones
         for(int i=0;i<numTuplas;i++){//i will be the index of the first tuple to compare
             for(int j=i+1;j<numTuplas;j++){//j start from the next tuple (i+1), it will be the index of the second tuple to compare
-                if (i!=j){
-                    BitSet parDeTuplas = new BitSet(numAtributos);
 
-                    //Building BitSet from two tuples s & t, if s[a]==t[a] --> bitset[a]=1
-                    for (int atributo=numAtributos-1;atributo>=0;atributo--){
-                        if(relacionCodificada[i][atributo]==relacionCodificada[j][atributo]){
-                            parDeTuplas.set(atributo);
-                        }
+                BitSet parDeTuplas = new BitSet(numAtributos);
+
+                //Building BitSet from two tuples s & t, if s[a]==t[a] --> bitset[a]=1
+                for(int atributo=numAtributos-1;atributo>=0;atributo--){
+                    if(relacionCodificada[i][atributo]==relacionCodificada[j][atributo]){
+                        parDeTuplas.set(atributo);
                     }
+                }
 
-                    if (!parDeTuplas.isEmpty()){
-                        for(int bit=parDeTuplas.nextClearBit(0); 0<=bit&&bit<numAtributos; bit=parDeTuplas.nextClearBit(bit+1)){
-                            //System.out.println("Tupla["+i+","+j+"]: bit: "+bit+". Refutaciones: "+parDeTuplas);
-                            agregarRefutacion(new RowX((BitSet)parDeTuplas.clone(), bit, numAtributos), refutaciones);
-                        }
+                if(!parDeTuplas.isEmpty()){
+                    for(int bit=parDeTuplas.nextClearBit(0); 0<=bit&&bit<numAtributos; bit=parDeTuplas.nextClearBit(bit+1)){
+                        //System.out.println("Tupla["+i+","+j+"]: bit: "+bit+". Refutaciones: "+parDeTuplas);
+                        agregarRefutacion(
+                            new RowX((BitSet)parDeTuplas.clone(),bit,numAtributos),
+                            matrices.get(bit),
+                            sizes
+                        );
                     }
                 }
             }
@@ -248,52 +252,45 @@ public class Main {
 
 
     //Funcion que agrega una nueva refutacion considerando la maximalidad de esta y las que ya estan
-    private static void agregarRefutacion(RowX refutacion, ArrayList<ArrayList<RowX>> refutaciones){
+    private static void agregarRefutacion(RowX refuFila,RowX[] matrixH,ArrayList<Integer> sizes){
 
-        ArrayList<RowX> refutacionesPorConsecuente = refutaciones.get(refutacion.getConsecuente());
-        if (refutacionesPorConsecuente.size() == 0) {
-            refutacionesPorConsecuente.add(refutacion);
+        int atrCons=refuFila.getConsecuente();
+        int size=sizes.get(atrCons);
+
+        //matrixH está vacío
+        if(size==0){
+            matrixH[0]=refuFila;
+            sizes.set(atrCons,size+1);
             return;
         }
 
-        //boolean ban = false, max = false, imax = false, addRef = false;
-        int i = 0;
-        while (i < refutacionesPorConsecuente.size()) {
-
-            //System.out.println("al comparar "+refutacionesPorConsecuente.get(i)+" con "+refutacion+" obtengo"+refutacionesPorConsecuente.get(i).isSubSet(refutacion));
-            if (refutacion.isSubSet(refutacionesPorConsecuente.get(i))) {
-                //System.out.println("ya esta " +refutacion);
+        //compara y decide
+        for(int i=0;i<size;i++){
+            if(refuFila.isSubSet(matrixH[i])){
                 return;
-            } else {
-                if (refutacionesPorConsecuente.get(i).isSubSet(refutacion)) {
-                    /* System.out.println("saco " +
-                    refutacionesPorConsecuente.get(i) +
-                    " y coloco " + refutacion);   */
-                    refutacionesPorConsecuente.remove(i);
-                    refutacionesPorConsecuente.add(refutacion);
-                    return;
-                } else {
-                    i++;
-
-
-                }
             }
-
-
+            if(matrixH[i].isSubSet(refuFila)){
+                matrixH[i]=refuFila.clone();
+                return;
+            }
         }
 
-        // System.out.println("SE ADD REF "+refutacion);
-        refutacionesPorConsecuente.add(refutacion);
+        //no había nada pareceido
+        matrixH[size]=refuFila;
+        sizes.set(atrCons,size+1);
     }
 
 
-    private static ArrayList<BitSet> buscaTransversalesMurakami(ArrayList<RowX> refutacionesPorConsecuente,int numAtributos) {
+    private static ArrayList<BitSet> buscaTransversalesMurakami(RowX[] matrixH,int size,int numAtributos) {
         ArrayList<BitSet> array = new ArrayList<BitSet>();
 
         try {
             BufferedWriter outfile = new BufferedWriter(new FileWriter(System.getProperty("user.home")+"/HyperFD/transversales/murakami/hg"));
             String file = "";
-            for (RowX refutacion : refutacionesPorConsecuente) file+=refutacion.toFileSHD();
+
+            for(int i=0;i<size;i++){
+                file+=matrixH[i].toFileSHD();
+            }
             outfile.write(file);
             outfile.close();
 
