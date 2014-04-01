@@ -249,9 +249,40 @@ public class Main {
         }
         System.out.println();
     }
-
+	
 
     //Funcion que agrega una nueva refutacion considerando la maximalidad de esta y las que ya estan
+    //método agregarRefutacion original, basado en agregarTransversal de la version anterior
+    /*	private static void agregarRefutacion(H refutacion, ArrayList<ArrayList<H>> refutaciones) {
+		ArrayList<H> refutacionesPorConsecuente = refutaciones.get(refutacion.getConsecuente());
+		if (refutacionesPorConsecuente.size() == 0) {
+		    refutacionesPorConsecuente.add(refutacion);
+		    return;
+		}
+
+		//boolean ban = false, max = false, imax = false, addRef = false;
+		int i = 0;
+		while (i < refutacionesPorConsecuente.size()) {
+		    if (refutacion.isSubSet(refutacionesPorConsecuente.get(i))) {
+		        return;
+		    } else {
+		        if (refutacionesPorConsecuente.get(i).isSubSet(refutacion)) {
+		            refutacionesPorConsecuente.remove(i);
+			    while(i< refutacionesPorConsecuente.size()){
+				if (refutacionesPorConsecuente.get(i).isSubSet(refutacion))
+					refutacionesPorConsecuente.remove(i);
+				else i++;
+			    }
+
+		            refutacionesPorConsecuente.add(refutacion);
+		            return;
+		        } else {
+		            i++;
+		        }
+		    }
+		}
+		refutacionesPorConsecuente.add(refutacion);
+	}*/
     private static void agregarRefutacion(RowX refuFila,RowX[] matrixH,ArrayList<Integer> sizes){
 
         int atrCons=refuFila.getConsecuente();
