@@ -592,3 +592,12 @@ Srch Refutations Time:  22 secs.
 Srch Transversals Time: 3 secs.
 ***************************************
 
+***************************************
+Datasource:             train50X500.csv.
+Algotithm:              MURAKAMI (Fijo).
+FDs Found:              322856.
+Encoding Time:          0 secs.
+Srch Refutations Time:  2 secs.
+Srch Transversals Time: 1 secs.
+***************************************
+
