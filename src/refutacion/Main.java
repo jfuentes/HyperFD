@@ -253,36 +253,45 @@ public class Main {
 
     //Funcion que agrega una nueva refutacion considerando la maximalidad de esta y las que ya estan
     //método agregarRefutacion original, basado en agregarTransversal de la version anterior
-    /*	private static void agregarRefutacion(H refutacion, ArrayList<ArrayList<H>> refutaciones) {
-		ArrayList<H> refutacionesPorConsecuente = refutaciones.get(refutacion.getConsecuente());
-		if (refutacionesPorConsecuente.size() == 0) {
-		    refutacionesPorConsecuente.add(refutacion);
+    /*private static void agregarRefutacionOriginal(RowX refutacion, ArrayList<ArrayList<RowX>> listaMatrices) {
+		ArrayList<RowX> matrizH = listaMatrices.get(refutacion.getConsecuente());
+		
+		//si la matriz está vacía, se añade sin preguntar.
+		if(matrizH.size()==0){
+		    matrizH.add(refutacion);
 		    return;
 		}
 
-		//boolean ban = false, max = false, imax = false, addRef = false;
 		int i = 0;
-		while (i < refutacionesPorConsecuente.size()) {
-		    if (refutacion.isSubSet(refutacionesPorConsecuente.get(i))) {
+		while (i < matrizH.size()) {
+		    if(refutacion.isSubSet(matrizH.get(i))){
+		    	//el nuevo es subset de uno existente
 		        return;
-		    } else {
-		        if (refutacionesPorConsecuente.get(i).isSubSet(refutacion)) {
-		            refutacionesPorConsecuente.remove(i);
-			    while(i< refutacionesPorConsecuente.size()){
-				if (refutacionesPorConsecuente.get(i).isSubSet(refutacion))
-					refutacionesPorConsecuente.remove(i);
-				else i++;
-			    }
-
-		            refutacionesPorConsecuente.add(refutacion);
+		    }
+		    else{
+		        if(matrizH.get(i).isSubSet(refutacion)){
+		        	//si se encuentra un elemento de H que es subset del nuevo, ese elemento de H se elimina
+		            matrizH.remove(i);
+		            //y también se elimina cualquier otro que sea subset del nuevo
+				    while(i< matrizH.size()){
+						if(matrizH.get(i).isSubSet(refutacion)) matrizH.remove(i);
+						else i++;
+					}
+					//una vez que todos los subset del nuevo son eliminados, se añade el nuevo
+		            matrizH.add(refutacion);
 		            return;
-		        } else {
+		        }
+		        else{//dudosa utilidad de este else
 		            i++;
 		        }
 		    }
 		}
-		refutacionesPorConsecuente.add(refutacion);
-	}*/
+		//si el nuevo nunca fue subset de nadie ni nadie fue subset de él, simplemente se añade
+		matrizH.add(refutacion);
+		return;
+	}
+	*/
+
     private static void agregarRefutacion(RowX refuFila,RowX[] matrixH,ArrayList<Integer> sizes){
 
         int atrCons=refuFila.getConsecuente();
@@ -302,7 +311,9 @@ public class Main {
             }
             if(matrixH[i].isSubSet(refuFila)){
                 matrixH[i]=refuFila.clone();
-                return;
+                //!!!!!!!!!!!!!!!!!!!!!!!!!!
+                return;//ERROR!!! se deben eliminar los demás que también son subset del nuevo
+                //!!!!!!!!!!!!!!!!!!!!!!!!!!
             }
         }
 
