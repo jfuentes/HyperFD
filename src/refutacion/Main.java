@@ -1,4 +1,3 @@
-
 package refutacion;
 
 import java.util.ArrayList;
@@ -35,7 +34,6 @@ public class Main {
     //java -client -classpath "/home/username/.adf:/home/username/HyperFD/classes:/home/username/HyperFD/lib/javacsv.jar:/home/username/HyperFD/lib/ga-frame.jar" refutacion.Main MURAKAMI train50X500.csv 50 500
     public static void main(String[] args) {
         //args[0] Algorithm. args[1] data source. args[2] # of attributes. args[3] # of tuples
-        for(int z=0;z<150;z++) System.out.println();//Clear Screen
 
 
 
@@ -46,6 +44,7 @@ public class Main {
             System.err.println("Error, you must execute the program with parameters: <[BERGE | KAVVADIAS | MURAKAMI | SCHERSON]>  <relation>  <number of attributes>  <number of tuples>");
             System.exit(0);
         }
+        //for(int z=0;z<45;z++) System.out.println();//Clear Screen
         // Setting the chosen Algorithm
         int algoritmoTransversal = 0;
         if (args[0].equals("BERGE")) algoritmoTransversal = BERGE;
@@ -57,7 +56,7 @@ public class Main {
         String nomRelacion = System.getProperty("user.home")+"/HyperFD/datasets/"+args[1];
         int numAtributos = Integer.parseInt(args[2]);
         int numTuplas = Integer.parseInt(args[3]);
-        System.out.println("Datasource: "+fuente+".\n");
+        //System.out.println("Datasource: "+fuente+".");
 
 
 
@@ -65,8 +64,8 @@ public class Main {
 
         //////////////////////////////////////////////////////////////////////////////////
         //Encoding
-        System.out.print("Encoding...");
-        long b1=0,encodTime=0,a1=System.currentTimeMillis();
+        //System.out.print("Encoding...");
+        //long b1=0,encodTime=0,a1=System.currentTimeMillis();
 
         String[][] relacion = null;
         try {
@@ -77,17 +76,17 @@ public class Main {
         }
         int[][] relacionCodificada = codificaRelacion(relacion);
 
-        b1=System.currentTimeMillis();
-        encodTime=(b1-a1)/1000;
-        System.out.println("Done.\t\t\t\t\t\t\t\t"+encodTime+" secs.");
+        //b1=System.currentTimeMillis();
+        //encodTime=(b1-a1)/1000;
+        //System.out.println("Done.\t\t\t\t\t\t\t\t"+encodTime+" secs.");
 
 
 
 
 
         //███████████████████████████████████████████████████████████████████████████████
-        //Searching Maximals Refutations
-        System.out.println("\nSearching Maximals Refutations (quadratic)...");
+        //Searching Maximal Refutations
+        //System.out.println("\nSearching Maximal Refutations (quadratic)...");
         long b2=0,srchRefTime=0,a2=System.currentTimeMillis();
 
         ArrayList<ArrayList<RowX>> refutaciones = new ArrayList<ArrayList<RowX>>(numAtributos);
@@ -95,7 +94,9 @@ public class Main {
 
         b2=System.currentTimeMillis();
         srchRefTime=(b2-a2)/1000;
-        System.out.println("Done.\t\t\t\t\t\t\t\t"+srchRefTime+" secs.");
+        //System.out.printf("\tDone.\t%6d secs.\n",srchRefTime);
+        System.out.print(numAtributos+"\t"+numTuplas);
+        System.out.printf("\t%6d\n",srchRefTime);
         
 
 
@@ -103,15 +104,10 @@ public class Main {
 
         //////////////////////////////////////////////////////////////////////////////////
         //Searching Transversals
-        String alg="MURAKAMI (Fijo)";
-        /*switch (algoritmoTransversal){
-            case SCHERSON: alg="SCHERSON"; break;
-            case BERGE: alg="BERGE"; break;
-            case KAVVADIAS: alg="KAVVADIAS"; break;
-            case MURAKAMI: alg="MURAKAMI"; break;
-            default: break;
-        }*/
-        System.out.println("\nSearching Transversals with Algorithm "+alg+"...");
+        /*
+        String alg="MURAKAMI (Fixed)";
+        //System.out.println("\nSearching Transversals with Algorithm "+alg+"...");
+        System.out.print("Applaying MURAKAMI... ");
         long b3=0,srchTransTime=0,a3=System.currentTimeMillis();
 
         int contadorDF=0,i=0;
@@ -125,25 +121,23 @@ public class Main {
 
         b3 = System.currentTimeMillis();
         srchTransTime=(b3-a3)/1000;
-        System.out.println("Done.\t\t\t\t\t\t\t\t"+srchTransTime+" secs.");
-
-
+        System.out.printf("\t\t\tDone.\t%6d secs.\n",srchTransTime);
+        */
 
 
 
         //////////////////////////////////////////////////////////////////////////////////
         //Showing & loging final Results
-        System.out.println("\nIt has been found " + contadorDF + " FDs.\n\n\n");
+        //System.out.printf("It has been found\t\t\t\t%6d FDs.\n",contadorDF);
         try {
             BufferedWriter outfile = new BufferedWriter(new FileWriter(System.getProperty("user.home")+"/HyperFD/logs", true));
-            outfile.write("***************************************\n");
-            outfile.write("Datasource:             "+fuente+".\n");
-            outfile.write("Algotithm:              "+alg+".\n");
-            outfile.write("FDs Found:              "+contadorDF+".\n");
-            outfile.write("Encoding Time:          "+encodTime+" secs.\n");
-            outfile.write("Srch Refutations Time:  "+srchRefTime+" secs.\n");
-            outfile.write("Srch Transversals Time: "+srchTransTime+" secs.\n");
-            outfile.write("***************************************\n\n");
+            //outfile.write("Datasource:             "+fuente+".\n");
+            outfile.write(numAtributos+","+numTuplas+","+srchRefTime+"\n");
+            //outfile.write("Algotithm:              "+alg+".\n");
+            //outfile.write("FDs Found:              "+contadorDF+".\n");
+            //outfile.write("Encoding Time:          "+encodTime+" secs.\n");
+            //outfile.write("Srch Transversals Time: "+srchTransTime+" secs.\n");
+            //outfile.write("***************************************\n");
             outfile.close();
         } catch (IOException e) {
             e.printStackTrace();
@@ -192,7 +186,7 @@ public class Main {
         //liberar memoria hashmp
         //v.removeAllElements();
 
-        System.out.println("\nCodification numbers not shown");
+        //System.out.println("\nCodification numbers not shown");
         /*
         //mostrar la relacion codificada
         for (int i = 0; i < codificada.length; i++) {
@@ -241,50 +235,51 @@ public class Main {
             }
             //Display percentage done
             float percent=(float)((i+1)*100)/numTuplas;
-            System.out.print("\rSearching Refutations: "+percent+"%");
+            //System.out.printf("\rSearching Refutations: %6.2f%%... ",percent);
+            System.out.printf("\r%6.2f%%... ",percent);
         }
-        System.out.println();
+        //System.out.println();
     }
 
+	//Funcion que agrega una nueva refutacion considerando la maximalidad de esta y las que ya estan
+	//Aplicada la corrección heredada de agregarTransversal()
+	private static void agregarRefutacion(RowX refutacion, ArrayList<ArrayList<RowX>> listaMatrices) {
+		ArrayList<RowX> matrixH=listaMatrices.get(refutacion.getConsecuente());
+		
+		//si la matriz está vacía, se añade sin preguntar.
+		if(matrixH.size()==0){
+		    matrixH.add(refutacion);
+		    return;
+		}
 
-    //Funcion que agrega una nueva refutacion considerando la maximalidad de esta y las que ya estan
-    private static void agregarRefutacion(RowX refutacion, ArrayList<ArrayList<RowX>> refutaciones){
-
-        ArrayList<RowX> refutacionesPorConsecuente = refutaciones.get(refutacion.getConsecuente());
-        if (refutacionesPorConsecuente.size() == 0) {
-            refutacionesPorConsecuente.add(refutacion);
-            return;
-        }
-
-        //boolean ban = false, max = false, imax = false, addRef = false;
-        int i = 0;
-        while (i < refutacionesPorConsecuente.size()) {
-
-            //System.out.println("al comparar "+refutacionesPorConsecuente.get(i)+" con "+refutacion+" obtengo"+refutacionesPorConsecuente.get(i).isSubSet(refutacion));
-            if (refutacion.isSubSet(refutacionesPorConsecuente.get(i))) {
-                //System.out.println("ya esta " +refutacion);
-                return;
-            } else {
-                if (refutacionesPorConsecuente.get(i).isSubSet(refutacion)) {
-                    /* System.out.println("saco " +
-                    refutacionesPorConsecuente.get(i) +
-                    " y coloco " + refutacion);   */
-                    refutacionesPorConsecuente.remove(i);
-                    refutacionesPorConsecuente.add(refutacion);
-                    return;
-                } else {
-                    i++;
-
-
-                }
-            }
-
-
-        }
-
-        // System.out.println("SE ADD REF "+refutacion);
-        refutacionesPorConsecuente.add(refutacion);
-    }
+		int i=0;
+		while(i<matrixH.size()){
+		    if(refutacion.isSubSet(matrixH.get(i))){
+		    	//el nuevo es subset de uno existente
+		        return;
+		    }
+		    else{
+		        if(matrixH.get(i).isSubSet(refutacion)){
+		        	//si se encuentra un elemento de H que es subset del nuevo, ese elemento de H se elimina
+		            matrixH.remove(i);
+		            //y también se elimina cualquier otro que sea subset del nuevo
+				    while(i< matrixH.size()){
+						if(matrixH.get(i).isSubSet(refutacion)) matrixH.remove(i);
+						else i++;
+					}
+					//una vez que todos los subset del nuevo son eliminados, se añade el nuevo
+		            matrixH.add(refutacion);
+		            return;
+		        }
+		        else{//dudosa utilidad de este else
+		            i++;
+		        }
+		    }
+		}
+		//si el nuevo nunca fue subset de nadie ni nadie fue subset de él, simplemente se añade
+		matrixH.add(refutacion);
+		return;
+	}
 
 
     private static ArrayList<BitSet> buscaTransversalesMurakami(ArrayList<RowX> refutacionesPorConsecuente,int numAtributos) {

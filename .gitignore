@@ -1,2 +1,12 @@
 #Ignorar clases compiladas
-/classes
+classes/*
+
+#Ignorar respaldos
+*.*~
+
+#Ignorar datasets
+datasets/*
+*.csv
+
+#Ignorar salida de murakami
+transversales/murakami/result.dat

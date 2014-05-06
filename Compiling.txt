@@ -1,5 +1,0 @@
-//Compilation
-javac -d "/home/username/HyperDF/classes" -classpath "/home/username/HyperDF/classes:/home/username/HyperDF/lib/javacsv.jar:/home/username/HyperDF/lib/ga-frame.jar" -encoding MacRoman -sourcepath "/home/username/HyperDF/src" -g -Xlint:all -Xlint:-cast -Xlint:-empty -Xlint:-fallthrough -Xlint:-path -Xlint:-processing -Xlint:-serial -Xlint:-unchecked "/home/username/HyperDF/src/refutacion/H.java" "/home/username/HyperDF/src/refutacion/TuplaCheck.java" "/home/username/HyperDF/src/refutacion/Antecedente.java" "/home/username/HyperDF/src/refutacion/Main.java" "/home/username/HyperDF/src/utils/IteradorCombinacion.java" "/home/username/HyperDF/src/refutacion/Hipergrafo.java" "/home/username/HyperDF/src/refutacion/Refutacion.java" "/home/username/HyperDF/src/refutacion/Prueba.java" "/home/username/HyperDF/src/refutacion/Kavvadias.java" "/home/username/HyperDF/src/refutacion/Consecuente.java"
-
-//Execution
-java -client -classpath "/home/username/.adf:/home/username/HyperDF/classes:/home/username/HyperDF/lib/javacsv.jar:/home/username/HyperDF/lib/ga-frame.jar" refutacion.Main MURAKAMI train50X500.csv 50 500
